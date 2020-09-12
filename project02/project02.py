@@ -5,9 +5,11 @@ VALID_2ND_POSITION_TOKENS = ('NAME', 'SEX', 'BIRT', 'DEAT', 'FAMC', 'FAMS',
 VALID_3RD_POSITION_TOKENS = ('INDI', 'FAM')
 
 
-def parse(line):
-    line = line.split(" ", 2)
+def detect_tokens(line):
     tokens = {}
+    tokens["string"] = line
+
+    line = line.split(" ", 2)
 
     tokens["level"] = line[0]
 
@@ -25,11 +27,25 @@ def parse(line):
         tokens['valid'] = 'N'
     return tokens
 
-with open("project02/test_input.ged", "r") as reader:
-    content = reader.read().splitlines()
 
-for line in content:
-    print("--> {}".format(line))
-    tokens = parse(line)
-    print("<-- {}|{}|{}|{}".format(tokens['level'],
-                                   tokens['tag'], tokens['valid'], tokens['args']))
+def parse(dir):
+    parsed_file = []
+    with open(dir, "r") as reader:
+        content = reader.read().splitlines()
+
+    for line in content:
+        parsed_file.append(detect_tokens(line))
+    return parsed_file
+
+
+def main():
+
+    parsed_file = parse("project02/test_input.ged")
+
+    for tokens in parsed_file:
+        print(f"--> {tokens['string']}\n"
+              f"<-- {tokens['level']}|{tokens['tag']}|{tokens['valid']}|{tokens['args']}")
+
+
+if __name__ == "__main__":
+    main()
