@@ -9,21 +9,21 @@ def detect_tokens(line):
     tokens = {}
     tokens["string"] = line
 
-    line = line.split(" ", 2)
+    split_line = line.split(" ", 2)
 
-    tokens["level"] = line[0]
+    tokens["level"] = split_line[0]
 
-    if line[1] in VALID_2ND_POSITION_TOKENS:
-        tokens["tag"] = line[1]
-        tokens['args'] = line[2]
+    if split_line[1] in VALID_2ND_POSITION_TOKENS:
+        tokens["tag"] = split_line[1]
+        tokens['args'] = split_line[2] if len(split_line) == 3 else ""
         tokens['valid'] = 'Y'
-    elif line[2] in VALID_3RD_POSITION_TOKENS:
-        tokens['args'] = line[1]
-        tokens["tag"] = line[2]
+    elif split_line[2] in VALID_3RD_POSITION_TOKENS:
+        tokens['args'] = split_line[1]
+        tokens["tag"] = split_line[2]
         tokens['valid'] = 'Y'
     else:
-        tokens["tag"] = line[1]
-        tokens['args'] = line[2]
+        tokens["tag"] = split_line[1]
+        tokens['args'] = split_line[2]
         tokens['valid'] = 'N'
     return tokens
 
